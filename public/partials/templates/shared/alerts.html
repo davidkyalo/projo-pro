@@ -1,10 +1,10 @@
-<div class="" id="stc_settings_loading" ng-show="$global.loading.active">
-	<div id="stc_loading_overlay"></div>
-	<div id="stc_loading_content">
-		<img ng-src="{{ $global.urls.views + 'images/' + 'loading.gif' }}"/>
+<div class="" id="is_loading_container" ng-show="$global.loading.active">
+	<div id="is_loading_overlay"></div>
+	<div id="is_loading_content">
+		<img ng-src="{{ $global.urls.images  + 'loading.gif' }}"/>
 	</div>
 </div>
-<div class="stc-alert clearfix">
+<div class="clearfix">
 	<div class="col-md-8 col-md-offset-2" ng-show="$global.alerts.success.active">
 		<div class="alert alert-success" ng-bind-html="$global.alerts.success.message()" role="alert">
 		</div>

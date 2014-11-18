@@ -1,0 +1,21 @@
+<div>
+    <ul class="nav nav-tabs">
+        <li ng-class="{ active : $state.includes('projects.project.overview({ project : project.id })') }">
+          <a ui-sref="projects.all">Overview</a>
+        </li>
+
+        <li ng-class="{ active : $state.includes('projects.project.jsAssets({ project : project.id })') }">
+          <a ui-sref="projects.all">JS Assets</a>
+        </li>
+
+         <li ng-class="{ active : $state.includes('projects.project.cssAssets({ project : project.id })') }">
+          <a ui-sref="projects.all">CSS Assets</a>
+        </li>
+
+         <li ng-class="{ active : $state.includes('projects.project.edit({ project : project.id })') }">
+          <a ui-sref="projects.all">Edit</a>
+        </li>
+
+</ul>
+    
+</div>

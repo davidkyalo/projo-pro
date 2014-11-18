@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAssetFilesTable extends Migration {
+class CreateClientsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,13 +12,12 @@ class CreateAssetFilesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('asset_files', function(Blueprint $table)
+		Schema::create('clients', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('assetId');
-			$table->string('source');
-			$table->string('sourceType');
-			
+			$table->string('name');
+			$table->string('email');
+
 			$table->dateTime("created_at");
 	      	$table->dateTime("updated_at");
 	      	$table->dateTime("deleted_at");
@@ -32,7 +31,7 @@ class CreateAssetFilesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('asset_files');
+		Schema::drop('clients');
 	}
 
 }

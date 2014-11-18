@@ -15,12 +15,20 @@ class CreateProjectsTable extends Migration {
 		Schema::create('projects', function(Blueprint $table)
 		{
 			$table->increments('id');
+            $table->integer('clientId');
             $table->string('name');
             $table->text('details');
-            $table->date('startedAt');
-            $table->date('finishedAt')->nullable();
+            $table->date('startedOn');
+            $table->date('deadline')->nullable();
+            $table->date('finishedOn')->nullable();
+            $table->integer('done');
+            $table->float('budget');
+            $table->float('paid');
             $table->text('urls');
-			$table->timestamps();
+            
+			$table->dateTime("created_at");
+	      	$table->dateTime("updated_at");
+	      	$table->dateTime("deleted_at");
 		});
 	}
 

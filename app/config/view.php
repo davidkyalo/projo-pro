@@ -13,8 +13,8 @@ return array(
 	|
 	*/
 
-	'paths' => array(__DIR__.'/../views'),
-
+	'paths' 		=> array(__DIR__.'/../../public/partials'),
+	'js_path'		=> '/assets/js/',
 	/*
 	|--------------------------------------------------------------------------
 	| Pagination View

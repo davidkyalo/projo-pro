@@ -1,17 +1,10 @@
-<ul class="nav nav-tabs">
-        <li ng-class="{ active:$state.includes('sites') }">
-          <a ui-sref="sites.all"> <i class="glyphicon glyphicon-user"></i> Accounts</a>
+<ul class="nav nav-pills">
+        <li ng-class="{ active : $state.includes('projects.all') }">
+          <a ui-sref="projects.all">All Projects</a>
         </li>
       
-        <li>
-          <a href="{{ adminUrl + '?page=stcqueue' }}"> <i class="glyphicon glyphicon-th-list"></i> Post Queue</a>
-        </li>
-        <li ng-class="{ active:$state.includes('settings') }">
-          <a ui-sref="settings.category.all({ category : 'general' })"> 
-          <i class="glyphicon glyphicon-tasks"></i> Settings </a>
-        </li>
-        <li ui-sref-active="active">
-          <a ui-sref="help"> <i class="glyphicon glyphicon-search"></i> Help</a>
+        <li ng-class="{ active:$state.includes('projects.add') }">
+          <a ui-sref="projects.add"> Add Project </a>
         </li>
 </ul>
     

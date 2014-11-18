@@ -15,14 +15,17 @@ class CreateAssetsTable extends Migration {
 		Schema::create('assets', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->bigInteger('projectId');
+			$table->integer('projectId');
             $table->string('name');
             $table->string('outputFile');
             $table->string('outputDir');
             $table->text('config');
-            $table->date('compiledAt');
-            $table->text('lastCcompilation');
-            $table->timestamps();
+            $table->timestamp('compiledAt');
+            $table->text('lastCompilation');
+            
+			$table->dateTime("created_at");
+	      	$table->dateTime("updated_at");
+	      	$table->dateTime("deleted_at");
 		});
 	}
 

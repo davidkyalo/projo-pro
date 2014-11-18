@@ -26,7 +26,7 @@ return array(
 	|
 	*/
 
-	'url' => 'http://localhost',
+	'url' => 'http://projo-pro.cn/',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -122,7 +122,8 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 
-		'PRP\Repositories\ServiceProvider',
+		'Models\Repositories\ServiceProvider',
+		'Api\ApiServiceProvider',
 
 	),
 
