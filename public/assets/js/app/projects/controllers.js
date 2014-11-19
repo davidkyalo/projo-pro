@@ -26,6 +26,8 @@ prpControllers.controller('projects.addCtl', function( $scope, $rootScope, $proj
 				.then(function(response){
 					$global.loading.hide();
 					$global.alerts.saved(response.data);
+				}, function(response){
+					$global.loading.hide();
 				});
 		}
 	}

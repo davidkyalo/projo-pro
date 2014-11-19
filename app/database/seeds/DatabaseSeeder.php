@@ -10,7 +10,13 @@ class DatabaseSeeder extends Seeder {
 	public function run()
 	{
 		Eloquent::unguard();
-		$clientsRepo =  App::make('clientsRepo');
+
+		$cats = App::make('ToDoCategoriesRepo');
+		$personal = $cats->create(['name' => 'Personal']);
+		$gen = $cats->create(['name' => 'General']);
+		$work = $cats->create(['name' => 'Work']);
+
+		$clientsRepo =  App::make('ClientsRepo');
 		if(!$clientsRepo->find(1)){
 			$client = $clientsRepo->newOne();
 			$client->id = 1;
@@ -47,18 +53,19 @@ class DatabaseSeeder extends Seeder {
 					],
 
 				];
-		$projects = App::make('projectsRepo');
+		$miles = App::make('ProjectMilestonesRepo');
+		$projects = App::make('ProjectsRepo');
 		foreach ($p_arr as $projectD) {
-			$projects->create($projectD);
-			/*$project = $projects->newOne();
-			$project->name = $projectD['name'];
-			$project->clientId = $projectD['clientId'];
-			$project->details = $projectD['details'];
-			$project->done =  $projectD['done'];
-			$project->budget =  $projectD['budget'];
-			$project->paid =  $projectD['paid'];
-			$project->urls =  $projectD['urls'];
-			$project->save();*/
+			$project = $projects->create($projectD);
+			$mile = $miles->newOne();
+			$mile->name = $project->name;
+			$mile->potion = 10;
+			$mile->projectId = $project->id;
+			$mile->notes = [];
+			$mile->save();
+			$project->milestoneId = $mile->id;
+			$project->save();
+			
 		}
 		// $this->call('UserTableSeeder');
 	}

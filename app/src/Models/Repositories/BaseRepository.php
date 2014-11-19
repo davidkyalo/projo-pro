@@ -21,8 +21,15 @@ abstract class BaseRepository implements IRepository {
         return $this->model->find($id);
     }
 
-    public function create($inputs) {
-        return $this->model->create($inputs);
+    public function create($data) {
+        $model = $this->newOne();
+        $modelAttributes =array_keys($model->getAttributes());
+        foreach ($data as $attribute => $value) {
+            if(in_array($attribute, $modelAttributes))
+                $model->$attribute = $value;
+        }
+        $model->save();
+        return $model;
     }
 
     public function update($id, $inputs) {

@@ -49,7 +49,6 @@ class BaseController extends Controller {
 	public function store(){
 		$data = Input::all();
 		$isValid = $this->validator->validate($this->modelName, 'create', $data);
-		//var_dump($data);
 		if($isValid){
 			$model = $this->repository->create($data);
 			return $this->response->success(['model' => $data , 'messages' => $this->modelName . ' saved.']);

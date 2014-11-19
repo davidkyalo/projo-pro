@@ -76,7 +76,11 @@ cnHelperServices.factory('RepositoryBlueprint', [ '$q', 'api', '$global', functi
 
 		$this.makeModel = function(model){
 			var $model = model;
+			$this.modelRelations($model);
 			return $model;
+		}
+		$this.modelRelations = function(model){
+			return model;
 		}
 
 		$this.save = function (model){

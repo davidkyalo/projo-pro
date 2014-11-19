@@ -4,7 +4,36 @@ prpApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', func
 	
 	var partialsUrl =  window.$appConfig.partialsUrl;
     var currentModuleDir = partialsUrl + 'projects/';
-    //Sites States
+   	
+   	 $stateProvider
+    		//Parent
+		    .state('todo', {
+		            url         : '/todo',
+		            abstract	: true,
+		            controller  : 'projects.mainCtl',
+					templateUrl : currentModuleDir + 'index.html',
+					resolve     : {
+				                    $projects		: function($projects) {
+					                       				return $projects;
+							                       }
+			                      },
+			        data		: {
+			        				displayData 	: { breadCrumb : 'Projects', icon : 'glyphicon glyphicon-user'}
+			        				
+			        			}
+				})
+
+			.state('projects.all', {
+					parent		: 'projects',
+		            url         : '/all',
+		            controller  : 'projects.allCtl',
+					templateUrl : currentModuleDir + 'all.html',
+			        data		: {
+			        				displayData 	: { breadCrumb : 'Projects / All', icon : 'glyphicon glyphicon-user'}
+			        			}
+				})
+
+
     $stateProvider
     		//Parent
 		    .state('projects', {

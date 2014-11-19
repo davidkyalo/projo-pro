@@ -18,10 +18,11 @@ class CreateProjectsTable extends Migration {
             $table->integer('clientId');
             $table->string('name');
             $table->text('details');
+            $table->string('status');
             $table->date('startedOn');
             $table->date('deadline')->nullable();
             $table->date('finishedOn')->nullable();
-            $table->integer('done');
+            $table->integer('milestoneId');
             $table->float('budget');
             $table->float('paid');
             $table->text('urls');

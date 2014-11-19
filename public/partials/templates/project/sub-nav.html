@@ -1,9 +1,9 @@
 <div>
     <ul class="nav nav-tabs">
-        <li ng-class="{ active : $state.includes('projects.project.overview({ project : project.id })') }">
+        <li ng-class="{{ $global.routes.isActive('projects.project.overview({ project : project.id })') }}">
           <a ui-sref="projects.all">Overview</a>
         </li>
-
+      
         <li ng-class="{ active : $state.includes('projects.project.jsAssets({ project : project.id })') }">
           <a ui-sref="projects.all">JS Assets</a>
         </li>

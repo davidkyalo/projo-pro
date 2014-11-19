@@ -7,7 +7,7 @@ class ProjectsController extends BaseController {
 	protected $repositoryName = 'projectsRepo';
 	protected $modelName = 'Project';
 
-
+/*
 	public function store(){
 		$data = Input::all();
 		$isValid = $this->validator->validate($this->modelName, 'create', $data);
@@ -22,7 +22,7 @@ class ProjectsController extends BaseController {
 		else{
 			return $this->response->error(['messages' => $this->validator->getMessages()]);
 		}
-	}
+	}*/
 
 	
 }

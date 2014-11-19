@@ -7,16 +7,24 @@ class Project extends BaseEntity {
 
 	protected $table = 'projects';
     protected $softDelete = true;
-    protected $fillable = array('clientId', 'name', 'details', 'startedOn', 'deadline', 'finishedOn', 'done', 'budget', 'paid', 'urls' );
+    protected $fillable = ['*'];
     protected $guarded = [];
     protected $hidden = array();
     protected $with = array('client');
-    protected $dates = array('startedOn', 'finishedOn', 'deadline');
+   // protected $dates = array('startedOn', 'deadline', 'finishedOn');
 
     protected function defaultAttributes(){
         return [
+                'clientId'      => 1, 
+                'name'          => '', 
+                'details'       => '', 
+                'status'        => 'pending',
                 'startedOn'     => date('Y-m-d'),
-                'finishedOn'    => Null,
+                'deadline'      => date('Y-m-d'),
+                'finishedOn'    => null,
+                'budget'        => 0, 
+                'paid'          => 0, 
+                'milestoneId'   => 0,
                 'urls'          => array()
                 ];
     }
@@ -34,6 +42,11 @@ class Project extends BaseEntity {
     {
         return $this->hasMany('Models\Entities\cssAssets', 'projectId');
     }
+
+    public function progress()
+    {
+        return $this->hasOne('Models\Entities\ProjectMilestone', 'milestoneId');
+    }    
 
     public function getUrlsAttribute($value)
     {
