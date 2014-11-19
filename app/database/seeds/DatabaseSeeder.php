@@ -10,25 +10,17 @@ class DatabaseSeeder extends Seeder {
 	public function run()
 	{
 		Eloquent::unguard();
-	/*	$clientsRepo =  App::make('clientsRepo');
-		$client = $clientsRepo->newOne();
-		$client->id = 1;
-		$client->name = 'Anonymous';
-		$client->save();
-*/
+		$clientsRepo =  App::make('clientsRepo');
+		if(!$clientsRepo->find(1)){
+			$client = $clientsRepo->newOne();
+			$client->id = 1;
+			$client->name = 'Anonymous';
+			$client->emails = [ 'anonymous@site.com', 'email@anonymous.com' ];
+			$client->phones = [];
+			$client->url = 'http://anonymous.com';
+			$client->save();
+		}
 		$p_arr = [
-					[
-						'name' 		=> 'Projo Pro',
-						'clientId'	=> 1,
-						'details'	=> 'Project Management App.',
-						'done'		=> 1,
-						'budget'	=> 500.00,
-						'paid'		=> 0.00,
-						'urls'		=> [
-										'dev'		=> 'http://projo-pro.cn',
-										'github'	=> 'https://github.com/davidmkyalo/projo-pro'
-										]
-					],
 					[
 						'name' 		=> 'Village Craft',
 						'clientId'	=> 1,
@@ -57,7 +49,8 @@ class DatabaseSeeder extends Seeder {
 				];
 		$projects = App::make('projectsRepo');
 		foreach ($p_arr as $projectD) {
-			$project = $projects->newOne();
+			$projects->create($projectD);
+			/*$project = $projects->newOne();
 			$project->name = $projectD['name'];
 			$project->clientId = $projectD['clientId'];
 			$project->details = $projectD['details'];
@@ -65,7 +58,7 @@ class DatabaseSeeder extends Seeder {
 			$project->budget =  $projectD['budget'];
 			$project->paid =  $projectD['paid'];
 			$project->urls =  $projectD['urls'];
-			$project->save();
+			$project->save();*/
 		}
 		// $this->call('UserTableSeeder');
 	}

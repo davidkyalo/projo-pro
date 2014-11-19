@@ -22,7 +22,7 @@ abstract class BaseRepository implements IRepository {
     }
 
     public function create($inputs) {
-        return $this->model->createItem($inputs);
+        return $this->model->create($inputs);
     }
 
     public function update($id, $inputs) {

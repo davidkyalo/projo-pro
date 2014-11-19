@@ -1,4 +1,7 @@
-prpServices.factory('api', ['$http', '$q', '$global', function($http, $q, $global){
+if(typeof cnHelperServices == 'undefined')
+	var cnHelperServices = angular.module('cnHelperServices', []);
+
+cnHelperServices.factory('api', ['$http', '$q', '$global', function($http, $q, $global){
 	var api = {};
 	api.url = $global.urls.api;
 

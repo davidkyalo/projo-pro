@@ -1,37 +1,28 @@
 <?php
 namespace Api\Controllers;
-
-use Models\Repositories\ProjectsRepository;
-use App;
+use Input;
 
 class ProjectsController extends BaseController {
 
-	protected $projectsRepo;
+	protected $repositoryName = 'projectsRepo';
+	protected $modelName = 'Project';
 
-	public function __construct(){
-		$this->projectsRepo = App::make('projectsRepo');
+
+	public function store(){
+		$data = Input::all();
+		$isValid = $this->validator->validate($this->modelName, 'create', $data);
+		if($isValid){
+			$model = $this->repository->newOne();
+			$model->urls = $data['urls'];
+			unset($data['urls']);
+			$model->fill($data);
+			$model->save();
+			return $this->response->success(['model' => $model , 'messages' => $this->modelName . ' saved.']);
+		}
+		else{
+			return $this->response->error(['messages' => $this->validator->getMessages()]);
+		}
 	}
 
-	public function index(){
-		return $this->projectsRepo->all()->toJson();
-	}
-
-	//GET
-	public function create(){}
-
-	//POST
-	public function store(){}
-
-	//GET
-	public function show(){}
-
-	//GET
-	public function edit(){}
-
-	//PUT/PATCH
-	public function update(){}
-
-	//DELETE
-	public function destroy(){}
-
+	
 }

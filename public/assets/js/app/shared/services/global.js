@@ -1,20 +1,54 @@
-prpServices.factory('$global', ['$rootScope', '$timeout', '$state', '$window', function( $rootScope, $timeout, $state, $window ){
-	var appInit = '*';
-	
+if(typeof cnHelperServices == 'undefined')
+	var cnHelperServices = angular.module('cnHelperServices', []);
+
+cnHelperServices.factory('$global', ['$rootScope', '$timeout', '$state', '$window', function( $rootScope, $timeout, $state, $window ){
+	var _app_ ;
+	var _api_ ;
+
 	var factory = {
 			app 		: app(),
+			api 		: api(),
 			urls 		: urls(),
 			alerts 		: alerts(),
 			loading 	: loading(),
 			routes		: routes()
 	}
 
+	function api(){
+		if(typeof _api_ == 'object')
+			return _api_;
+
+		var $this = {};
+		$this.statusMap = app().apiStatuses;
+
+		$this.isStatus = function(response, status){
+			return response.$status ==  $this.statusMap[status];
+		}
+
+		$this.isOk = function(response){
+			return $this.isStatus(response, 'ok') || $this.isStatus(response, 'success');
+		}
+
+		$this.isSuccess = function(response){
+			return $this.isStatus(response, 'success');
+		}
+
+		$this.isError = function(response){
+			return $this.isStatus(response, 'error');
+		}
+
+		$this.isBad = function(response){
+			return $this.isStatus(response, 'bad');
+		}
+		_api_ = $this;
+		return $this;
+	}
 
 
 	function app(reset){
 		reset = typeof reset == 'undefined' ? false : reset;
-		if(typeof appInit == 'object' && !reset)
-			return appInit;
+		if(typeof _app_ == 'object' && !reset)
+			return _app_;
 
 		var $this = {};
 		
@@ -26,7 +60,7 @@ prpServices.factory('$global', ['$rootScope', '$timeout', '$state', '$window', f
 		}
 		$this.setVars(typeof $window.$appConfig == 'undefined' ? {} : $window.$appConfig);
 
-		appInit = $this;
+		_app_ = $this;
 		return $this;
 	}
 
@@ -197,11 +231,40 @@ prpServices.factory('$global', ['$rootScope', '$timeout', '$state', '$window', f
 			}
 			$this.show = function(theMsg, hide){
 				hide = typeof hide == 'undefined' ? 3500 : hide;
-				$this._message = theMsg;
+				$this.setMessage(theMsg);
 				$this.active = true;
-				if(hide !== false)
-					$this.hide(hide);
+				// if(hide !== false)
+				// 	$this.hide(hide);
 				return $this;
+			}
+
+			$this.setMessage = function(messages){
+				var message = '';
+				if(typeof messages == 'object'){
+					var msgKeys = Object.keys(messages);
+					msgKeys.forEach(function(msgKey){
+						message += '<div class="alert-msg-group">'
+									+'<span>' + msgKey + ':</span>'
+									+ $this.messageStr(messages[msgKey])
+									+ '</div>';
+					});
+					$this._message = message;
+					return message;
+				}
+				$this._message = $this.messageStr(messages);
+				return $this._message;
+
+			}
+
+			$this.messageStr = function(messages){
+				var message = '';
+				if(typeof messages == 'object'){
+					messages.forEach(function(msg){
+						message+='<li>' + msg + '</li>';
+					});
+					return '<ul>' + message + '</ul>';
+				}
+				return messages;
 			}
 
 			$this.hide = function(whenTo){
@@ -228,26 +291,22 @@ prpServices.factory('$global', ['$rootScope', '$timeout', '$state', '$window', f
 
 
 		alerts.serverResponse = function(responseData, messages, context, hide){
-			console.log(responseData.alerts);
 			var defaults = alerts.setDefaults( messages, context);
-			messages = typeof responseData.alerts != 'undefined' 
-								?  alerts.setDefaults({
-											error 		: arrayToList(responseData.alerts.error),
-											success 	: arrayToList(responseData.alerts.success)
-											}	, context) 
+			messages = typeof responseData.messages != 'undefined' 
+								?  responseData.messages
 								: defaults;
-			messages.success = messages.success.length == 0 ? defaults.success : messages.success;
-			messages.error = messages.error.length == 0 ? defaults.error : messages.error;
 
-			if(responseData.success){
-				alerts.success.show(messages.success, hide);
+			console.log(responseData.messages);
+			
+			if(api().isSuccess(responseData)){
+				alerts.success.show(messages, hide);
 			}
 			else{
-				alerts.error.show(messages.error, hide);
+				alerts.error.show(messages, hide);
 			}
 		}
 
-		alerts.saveResponse = function(responseData, messages, hide){
+		alerts.saved = function(responseData, messages, hide){
 			return alerts.serverResponse(responseData, messages, 'save', hide);
 		}
 

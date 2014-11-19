@@ -52,3 +52,17 @@ header {
   
 
 }
+
+
+.input-group-addon.addon-label{
+  min-width: 190px;
+  font-size: 1.1em;
+  font-weight: 500;  
+  max-height: 35px!important;
+}
+.input-group-many{
+  padding-left: 25px;
+}
+.input-group-many .input-group{
+  margin: 4px 0px;
+}

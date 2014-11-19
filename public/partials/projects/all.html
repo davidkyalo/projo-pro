@@ -2,7 +2,10 @@
 	<div class="col-md-6" ng-repeat="project in projects">
 		<div class="callout callout-primary callout-condensed">
 			<h4>
-				{{ project.name }}
+				<a ui-sref="projects.project.overview({ project: project.id })">
+					{{ project.name }}
+				</a>
+				
 				<div class="pull-right">
 
 				 	<a class="btn btn-info" ui-sref="project.jsAssets.all({ projectId: project.id })"> 

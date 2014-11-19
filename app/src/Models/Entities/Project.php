@@ -7,13 +7,15 @@ class Project extends BaseEntity {
 
 	protected $table = 'projects';
     protected $softDelete = true;
-    protected $fillable = array('*');
+    protected $fillable = array('clientId', 'name', 'details', 'startedOn', 'deadline', 'finishedOn', 'done', 'budget', 'paid', 'urls' );
+    protected $guarded = [];
     protected $hidden = array();
     protected $with = array('client');
+    protected $dates = array('startedOn', 'finishedOn', 'deadline');
 
     protected function defaultAttributes(){
         return [
-                'startedOn'     => time(),
+                'startedOn'     => date('Y-m-d'),
                 'finishedOn'    => Null,
                 'urls'          => array()
                 ];

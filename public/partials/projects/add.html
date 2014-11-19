@@ -1,0 +1,85 @@
+<div class="row">
+	<div class="col-md-8 col-md-offset-2">
+		<form name="projectForm" novalidate class="css-form" role="form">
+		   	<fieldset>
+        	<legend>Details</legend>
+				  <div class="form-group">
+				    <div class="input-group">
+				      <div class="input-group-addon addon-label" >Project Name</div>
+				      <input class="form-control" ng-model="project.name" type="text" required />
+				    </div>
+				  </div>
+
+				  <div class="form-group">
+				    <div class="input-group">
+				      <div class="input-group-addon addon-label" >Details</div>
+				      <textarea class="form-control" ng-model="project.details" rows="3"></textarea>
+				    </div>
+				  </div>
+
+				  <div class="form-group">
+				    <div class="input-group">
+				      <div class="input-group-addon addon-label" >Date Started</div>
+				      <input class="form-control" ng-model="project.startedOn" type="text" required />
+				    </div>
+				  </div>
+
+				   <div class="form-group">
+				    <div class="input-group">
+				      <div class="input-group-addon addon-label" >Deadline</div>
+				      <input class="form-control" ng-model="project.deadline" type="text" />
+				    </div>
+				   </div>
+
+				 
+				   <div class="form-group">
+				   	<label>Urls</label>
+				   	<div class="input-group-many">
+					    <div class="input-group">
+					      <div class="input-group-addon addon-label" >Dev</div>
+					      <input class="form-control" ng-model="project.urls.dev" type="text"  />
+					    </div>
+					    <div class="input-group">
+					      <div class="input-group-addon addon-label" >Git</div>
+					      <input class="form-control" ng-model="project.urls.git" type="text"  />
+					    </div>
+					    <div class="input-group">
+					      <div class="input-group-addon addon-label" >Live</div>
+					      <input class="form-control" ng-model="project.urls.live" type="text" />
+					    </div>
+					   
+					</div>
+				   </div>
+
+			</fieldset>
+			<fieldset>
+        	<legend>Client</legend>
+        		<div class="form-group">
+				    <div class="input-group">
+				      <div class="input-group-addon addon-label">Name</div>
+				      <select  class="form-control" ng-model="project.clientId" required>
+				      	<option value="">Select Client name</option>
+				      	<option ng-repeat="client in clients" value="{{ client.id }}" > {{ client.name }}</option>
+				      </select>
+				    </div>
+				  </div>
+
+				  <div class="form-group">
+				    <div class="input-group">
+				      <div class="input-group-addon addon-label" >Budget</div>
+				      <input class="form-control" ng-model="project.budget" type="text" required />
+				       <div class="input-group-addon" >USD</div>
+				    </div>
+				   </div>
+
+
+        	</fieldset>
+
+			  <div class="form-group pull-right">
+			  		<button class="btn btn-primary" ng-disabled="$global.loading.isActive()" ng-click="create()">Save</button>
+			  </div>
+		</form>
+		
+	</div>
+
+</div>

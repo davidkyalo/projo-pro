@@ -1,4 +1,4 @@
-var prpApp = angular.module('prpApp', ['ui.router', 'ngSanitize' ,'prpControllers', 'prpServices']);
+var prpApp = angular.module('prpApp', ['ui.router', 'ngSanitize' ,'prpControllers', 'cnHelperServices' , 'prpServices']);
 
 prpApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $locationProvider) {
 	
@@ -13,12 +13,9 @@ prpApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', func
 		            controller  : 'projects.mainCtl',
 					templateUrl : currentModuleDir + 'index.html',
 					resolve     : {
-				                    factory		: function(projectsFactory) {
-					                       				return projectsFactory.get();
-							                       },
-							        projects 		: function(factory) {
-							        					return factory.all();
-							        				}
+				                    $projects		: function($projects) {
+					                       				return $projects;
+							                       }
 			                      },
 			        data		: {
 			        				displayData 	: { breadCrumb : 'Projects', icon : 'glyphicon glyphicon-user'}
@@ -41,8 +38,41 @@ prpApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', func
 		            url         : '/add',
 		            controller  : 'projects.addCtl',
 					templateUrl : currentModuleDir + 'add.html',
+					resolve     : {
+				                    $clients		: function($clients) {
+					                       				return $clients;
+							                       }
+			                      },
 			        data		: {
 			        				displayData 	: { breadCrumb : 'Projects / Add', icon : 'glyphicon glyphicon-user'}
+			        			}
+				})
+
+		currentModuleDir = partialsUrl + 'project/';
+		$stateProvider
+			.state('projects.project', {
+					parent		: 'projects',
+		            abstract	: true,
+		            url         : '/:project',
+		            controller  : 'project.mainCtl',
+					templateUrl : currentModuleDir + 'index.html',
+					resolve     : {
+				                    project		: function($projects, $stateParams) {
+					                       				return $projects.find($stateParams.project);
+							                       }
+			                      },
+			        data		: {
+			        				displayData 	: { breadCrumb : 'Project', icon : 'glyphicon glyphicon-user'}
+			        			}
+				})
+
+			.state('projects.project.overview', {
+					parent		: 'projects.project',
+		            url         : '/',
+		            controller  : 'project.overviewCtl',
+					templateUrl : currentModuleDir + 'overview.html',
+			        data		: {
+			        				displayData 	: { breadCrumb : 'Project', icon : 'glyphicon glyphicon-user'}
 			        			}
 				})
 		

@@ -1,26 +1,22 @@
-prpServices.factory('modelBluePrint', [ '$q', 'api', function($q, api){
-	function Model(modelName, apiPrefix){
+if(typeof cnHelperServices == 'undefined')
+	var cnHelperServices = angular.module('cnHelperServices', []);
+
+cnHelperServices.factory('RepositoryBlueprint', [ '$q', 'api', '$global', function($q, api, $global){
+	function Repository(modelName, apiPrefix){
 		var $this = this;
 		$this.api = api;
 		$this.promise;
-		$this.models;
+		$this.models = {};
 
-		//Sungular Name
 		$this.modelName = modelName;
-		//Plural Name
 		$this.apiPrefix = apiPrefix;
-
+		$this.newModel = {};
 		$this.routes  = { 
-						'index'		: '',
-						'create'	: 'create',
-						'update'	: 'update/:id',
-						'destroy'	: 'destroy/:id'
+						 index		: '',
+						 store		: 'store',
+						 update		: 'update/:id',
+						 destroy	: 'destroy/:id'
 					};
-		
-		/*$this.apiPrefix = function(){
-			return $this.pModelName + '/';
-		}*/
-
 
 		$this.apiRoute = function (route, prefix){
 			prefix = typeof prefix == 'undefined' ? $this.apiPrefix : prefix;
@@ -36,12 +32,11 @@ prpServices.factory('modelBluePrint', [ '$q', 'api', function($q, api){
 			return $this.apiRoute(route, prefix);
 		}
 
-		$this.init = function (){
+		$this.fetch = function (){
 			 if(!$this.promise) {
 		          $this.promise = $this.api.get( $this.getRoute('index') )
 			                        .then( function(response) {
-			                        	console.log(response);
-			                            return response.data;                            
+			                        	return response.data;                            
 			                        }, function(response){
 			                             return $q.reject(response.data);
 			                        });
@@ -51,35 +46,32 @@ prpServices.factory('modelBluePrint', [ '$q', 'api', function($q, api){
 		}
 
 		$this.get = function() {
-			return $this.getModels().then( function(models){
+			if(!$this.promise)
+				$this.fetch();
+			return $this.promise.then(function (response){
+				if($global.api.isOk(response) && response.models){
+					$this.models = {};
+					response.models.forEach(function(model){
+						$this.models[model.id] = $this.makeModel(model);
+					});
+				}
+				
 				return $this;
 			});
 		}
 
-		$this.getModels = function(){
+		$this.fetchModels = function(){
 			if(!$this.promise)
-				$this.init();
+				$this.fetch();
 			return $this.promise;
 		}
 
 		$this.all = function (){
-			return $this.getModels().then( function(models){
-				if(!$this.models){
-					$this.models = {};
-					models.forEach(function(model){
-						$this.models[model.id] = $this.makeModel(model);
-					});
-
-				}
-				return $this.models;
-			});
+			return $this.models;
 		}
 
 		$this.find = function(id){
-			return $this.getModels().then( function(models){
-				$this.all();
-				return $this.models[id];
-			});
+			return $this.models[id];
 		}
 
 		$this.makeModel = function(model){
@@ -87,17 +79,25 @@ prpServices.factory('modelBluePrint', [ '$q', 'api', function($q, api){
 			return $model;
 		}
 
-		$this.create = function (model){
-			return $this.api.post( $this.getRoute('create') , model )
+		$this.save = function (model){
+			var route = model.id ? 'update' : 'store';
+			var params = model.id ? { id : model.id } : {};
+			
+			return $this.api.post( $this.getRoute( route, params ) , model )
 					.success(function(response){
-						if(response.model){
-							$this.models[response.model.id] = $this.makeModel(response.model);
+						console.log(response);
+						if($global.api.isOk(response) && response.model){
+							$this.add(response.model);
 						}
 						return response;
 					})
 					.error(	function(response){
+							console.log(response);
 						        return response;
 	                        });					
+		}
+		$this.add = function (model) {
+			$this.models[model.id] = $this.makeModel(model);
 		}
 
 		$this.update = function(model){
@@ -105,7 +105,7 @@ prpServices.factory('modelBluePrint', [ '$q', 'api', function($q, api){
 			return $this.api.post( $this.getRoute('update', params) , model )
 					.success(function(response){
 						if(response.model){
-							$this.models[response.model.id] = $this.makeModel(response.model);
+							$this.add(response.model);
 						}
 						return response;
 					})
@@ -119,7 +119,7 @@ prpServices.factory('modelBluePrint', [ '$q', 'api', function($q, api){
 			return $this.api.get( $this.getRoute('destroy', params))
 					.success(function(response){
 						if(response.id){
-							delete $this.models[id];	
+							$this.remove(id);
 						}
 						return response;
 					})
@@ -127,10 +127,20 @@ prpServices.factory('modelBluePrint', [ '$q', 'api', function($q, api){
 						        return response;
 	                        });
 		}
+
+		$this.remove = function (id){
+			delete $this.models[id];	
+		}
+
+		$this.new = function (data){
+			data = typeof data == 'object' ? data : $this.newModel;
+			return $this.makeModel(data);
+		}
+		
 	}
 		return {
 			make : function(modelName, apiPrefix){
-				return new Model(modelName, apiPrefix);
+				return new Repository(modelName, apiPrefix);
 			}
 		}
 }]);

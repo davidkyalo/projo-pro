@@ -9,6 +9,12 @@ return [
 							'partialsUrl'	=> Config::get('app.url') . 'partials/',
 							'templatesDir'	=> 'templates/',
 							'imagesUrl'		=> Config::get('app.url') . 'assets/images/',
+							'apiStatuses'	=> [
+												'success' 	=> 'success',
+												'error'		=> 'error',
+												'bad'		=> 'bad',
+												'ok'		=> 'ok'
+											]
 				
 						],
 
@@ -25,11 +31,13 @@ return [
 
 							'app'		=> [
 											'app.js',
-											'shared/services/model.js',
+											'shared/services/repository-blueprint.js',
 											'shared/services/api.js',
 											'shared/services/global.js',
 											'projects/controllers.js',
-											'projects/services.js',
+											'projects/projects-repository.js',
+											'project/controllers.js',
+											'clients/clients-repository.js'
 										],
 
 
